@@ -44,13 +44,18 @@ app.post("/todos", async (req, res) => {
 app.put("/todos/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { completed } = req.body;
-    const todo = await Todo.findByIdAndUpdate(id, { completed }, { new: true });
-    res.json(todo);
+    const { text, completed } = req.body;
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      id,
+      { text, completed },
+      { new: true }
+    );
+    res.json(updatedTodo);
   } catch (error) {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
 
 app.delete("/todos/:id", async (req, res) => {
   try {

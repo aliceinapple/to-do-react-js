@@ -1,4 +1,4 @@
-export const getItems = async () => {
+export const getTodos = async () => {
     try {
       const response = await fetch("http://localhost:3000/todos");
       if (!response.ok) {

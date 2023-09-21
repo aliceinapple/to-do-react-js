@@ -1,8 +1,4 @@
-type CreateTodoFunction = (
-    newTodo: string,
-) => void;
-
-export const createTodo: CreateTodoFunction = (newTodo) => {
+export const createTodo = (newTodo: string) => {
     fetch("http://localhost:3000/todos", {
         method: "POST",
         headers: {
