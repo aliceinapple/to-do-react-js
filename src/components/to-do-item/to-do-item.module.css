@@ -1,0 +1,13 @@
+.to_do_item_container{
+    display: flex;
+    gap: 20px;
+}
+
+.to_do_item{
+    height: 50px;
+}
+
+.to_do_icons{
+    display: flex;
+    gap: 10px;
+}
