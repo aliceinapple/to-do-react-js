@@ -1,64 +1,58 @@
-import { useState } from 'react'
-import { Button, Form, Input } from 'antd';
-import { CheckOutlined, EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons"
-import styles from './to-do-item.module.css'
-import { deleteTodo } from '../../actions/deleteTodo';
-import { toggleTodo } from '../../actions/toggleTodo';
-import { editTodo } from '../../actions/editTodo';
+import { useState } from 'react';
+import { Space } from 'antd';
+import ToggleTodoButton from '../../ui/button/buttons/toggle-todo-button';
+import EditTodoButton from '../../ui/button/buttons/edit-todo-button';
+import DeleteTodoButton from '../../ui/button/buttons/delete-todo-button';
+import TodoItemInput from '../../ui/input/inputs/todo-item-input';
+import { editTodo } from '../../actions/edit-todo';
 
 interface ToDoItemProps {
-    text: string,
-    id: string,
-    completed: boolean,
-    handleGetTodos: () => Promise<void>
+  text: string;
+  id: string;
+  completed: boolean;
 }
 
-const ToDoItem: React.FC<ToDoItemProps> = ({ text, id, completed, handleGetTodos }) => {
-    const [value, setValue] = useState(text)
-    const [isDisabled, setIsDisabled] = useState(true)
+const ToDoItem: React.FC<ToDoItemProps> = ({
+  text,
+  id,
+  completed,
+}) => {
+  const [value, setValue] = useState(text);
+  const [readOnly, setReadOnly] = useState(true);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value)
+  const handleEdit = async () => {
+    await editTodo(id, value);
+    setReadOnly(true);
+  };
+
+  const getColor = () => {
+    if (completed) {
+      return 'rgb(255,255,255, 0.3)'
+    } else if (!readOnly) {
+      return 'linear-gradient(210deg, #79d8f4, #72a9ef, #d486f0, #ee9fd1)'
+    } else {
+      return 'rgb(255,255,255, 0.9)'
     }
+  }
 
-    const handleDelete = async () => {
-        deleteTodo(id)
-        await handleGetTodos()
-    }
+  return (
+    <Space
+      style={{
+        background: getColor(),
+        padding: '10px',
+        borderRadius: '6px',
+      }}
+    >
+      <Space>
+        <TodoItemInput readOnly={readOnly} value={value} setValue={setValue} handleEdit={handleEdit} />
+      </Space>
+      <Space>
+        <ToggleTodoButton id={id} completed={completed} />
+        <EditTodoButton readOnly={readOnly} setReadOnly={setReadOnly} handleEdit={handleEdit} completed={completed} />
+        <DeleteTodoButton id={id} />
+      </Space>
+    </Space>
+  );
+};
 
-    const handleToggle = async () => {
-        toggleTodo(id, completed)
-        await handleGetTodos()
-    }
-
-    const handleEdit = async () => {
-        editTodo(id, value)
-        setIsDisabled(true)
-        await handleGetTodos()
-    }
-
-    return (
-        <div className={completed ? styles.to_do_item_container_completed : styles.to_do_item_container}>
-            <Form onFinish={handleEdit}>
-                <div className={styles.to_do_item}>
-                    <Form.Item>
-                        <Input disabled={isDisabled} value={value} onChange={handleInputChange} />
-                    </Form.Item>
-                </div>
-                <div className={styles.to_do_icons}>
-                    <Button type="primary" icon={<CheckOutlined />} onClick={handleToggle} />
-                    {
-                        isDisabled ? <Button type="primary" icon={<EditOutlined />} onClick={() => setIsDisabled(false)} /> :
-                            <Form.Item>
-                                <Button htmlType="submit" type="primary" icon={<PlusOutlined />} />
-                            </Form.Item>
-                    }
-                    <Button danger type="primary" icon={<DeleteOutlined />} onClick={handleDelete} />
-                </div>
-            </Form>
-
-        </div>
-    )
-}
-
-export default ToDoItem
+export default ToDoItem;

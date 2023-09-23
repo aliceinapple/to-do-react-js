@@ -1,23 +1,42 @@
-import { useEffect } from "react"
-import ToDoItem from "../to-do-item/to-do-item.component"
+import ToDoItem from '../to-do-item/to-do-item.component';
+import { Space } from 'antd';
 
 interface ToDoItemListProps {
-    todos: { _id: string, text: string, completed: boolean }[]
-    handleGetTodos: () => Promise<void>
+  todos: { _id: string; text: string; completed: boolean }[];
 }
 
-const ToDoItemList: React.FC<ToDoItemListProps> = ({ todos, handleGetTodos }) => {
+const ToDoItemList: React.FC<ToDoItemListProps> = ({
+  todos,
+}) => {
+  const done = todos.filter((item) => item.completed);
+  const todo = todos.filter((item) => !item.completed);
 
-    useEffect(() => {
-     }, [todos])
+  return (
+    <Space direction="vertical">
+      <Space direction="vertical">
+        {todo.map((item) => (
+          <div key={item._id}>
+            <ToDoItem
+              text={item.text}
+              id={item._id}
+              completed={item.completed}
+            />
+          </div>
+        ))}
+      </Space>
+      <Space direction="vertical">
+        {done.map((item) => (
+          <div key={item._id}>
+            <ToDoItem
+              text={item.text}
+              id={item._id}
+              completed={item.completed}
+            />
+          </div>
+        ))}
+      </Space>
+    </Space>
+  );
+};
 
-    return (
-        <div>
-            {todos.map((item, index) =>
-                <div key={index}><ToDoItem text={item.text} id={item._id} completed={item.completed} handleGetTodos={handleGetTodos} /></div>
-            )}
-        </div>
-    )
-}
-
-export default ToDoItemList
+export default ToDoItemList;

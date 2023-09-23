@@ -1,36 +1,34 @@
-import { useState } from "react"
-import { Form, Button, Input } from 'antd';
-import { createTodo } from "../../actions/createTodo";
+import { useState } from 'react';
+import { Space } from 'antd';
+import { createTodo } from '../../actions/create-todo';
+import TodoMainInput from '../../ui/input/inputs/todo-main-input';
+import CreateTodoButton from '../../ui/button/buttons/create-todo-button';
 
-interface ToDoInputProps {
-    handleGetTodos: () => Promise<void>
-}
+const ToDoInput: React.FC = () => {
+  const [value, setValue] = useState('');
 
-const ToDoInput: React.FC<ToDoInputProps> = ({ handleGetTodos }) => {
-    const [value, setValue] = useState('')
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value)
+  const handleCreateTodo = async () => {
+    if (value) {
+      await createTodo(value);
+      setValue('');
     }
+  };
 
-    const handleCreateTodo = () => {
-        createTodo(value)
-        setValue('')
-        handleGetTodos()
-    }
+  return (
+    <Space
+      style={{
+        backgroundColor: 'rgb(255,255,255, 0.3)',
+        padding: '10px',
+        borderRadius: '6px',
+      }}
+    >
+      <Space>
+        <TodoMainInput value={value} setValue={setValue} handleCreateTodo={handleCreateTodo} />
+        <CreateTodoButton handleCreateTodo={handleCreateTodo} />
+      </Space>
 
-    return (
-        <div>
-            <Form onFinish={handleCreateTodo}>
-                <Form.Item>
-                    <Input placeholder="Basic usage" value={value} onChange={handleInputChange} />
-                </Form.Item>
-                <Form.Item>
-                    <Button htmlType="submit" />
-                </Form.Item>
-            </Form>
-        </div>
-    )
-}
+    </Space>
+  );
+};
 
-export default ToDoInput
+export default ToDoInput;
