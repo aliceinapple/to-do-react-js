@@ -1,4 +1,7 @@
 import { Component, ReactNode } from 'react';
+import Box from '../ui/box/box';
+import Title from 'antd/es/typography/Title';
+import { textStyles } from '../ui/styles/text';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -28,9 +31,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div>
-          <h1>{this.state.error}</h1>
-        </div>
+        <Box alignItems='center' style={{marginTop: '50%'}}><Title style={textStyles}>{this.state.error}</Title></Box>
       );
     }
 

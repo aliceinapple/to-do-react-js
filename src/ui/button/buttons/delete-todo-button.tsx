@@ -1,20 +1,24 @@
-import { DeleteOutlined } from "@ant-design/icons";
-import { deleteTodo } from "../../../actions/delete-todo";
-import TodoButton from "../todo-button";
-
+import { DeleteOutlined } from '@ant-design/icons';
+import { deleteTodo } from '../../../actions/delete-todo';
+import TodoButton from '../todo-button';
 
 interface DeleteTodoButtonProps {
-    id: string
+  id: string;
 }
 
 const DeleteTodoButton: React.FC<DeleteTodoButtonProps> = ({ id }) => {
-    const handleDelete = async () => {
-        await deleteTodo(id);
-    };
+  const handleDelete = async () => {
+    await deleteTodo(id);
+  };
 
-    return (
-        <TodoButton danger={true} type="primary" icon={<DeleteOutlined />} onClick={handleDelete} />
-    )
-}
+  return (
+    <TodoButton
+      danger={true}
+      type="primary"
+      icon={<DeleteOutlined />}
+      onClick={handleDelete}
+    />
+  );
+};
 
-export default DeleteTodoButton
+export default DeleteTodoButton;

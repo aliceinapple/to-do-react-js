@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Space } from 'antd';
 import ToggleTodoButton from '../../ui/button/buttons/toggle-todo-button';
 import EditTodoButton from '../../ui/button/buttons/edit-todo-button';
 import DeleteTodoButton from '../../ui/button/buttons/delete-todo-button';
 import TodoItemInput from '../../ui/input/inputs/todo-item-input';
 import { editTodo } from '../../actions/edit-todo';
+import { itemComplitedStyles, itemEditStyles, itemStyles } from '../../ui/styles/item';
+import Box from '../../ui/box/box';
 
 interface ToDoItemProps {
   text: string;
@@ -12,11 +13,7 @@ interface ToDoItemProps {
   completed: boolean;
 }
 
-const ToDoItem: React.FC<ToDoItemProps> = ({
-  text,
-  id,
-  completed,
-}) => {
+const ToDoItem: React.FC<ToDoItemProps> = ({ text, id, completed }) => {
   const [value, setValue] = useState(text);
   const [readOnly, setReadOnly] = useState(true);
 
@@ -27,31 +24,34 @@ const ToDoItem: React.FC<ToDoItemProps> = ({
 
   const getColor = () => {
     if (completed) {
-      return 'rgb(255,255,255, 0.3)'
+      return itemComplitedStyles;
     } else if (!readOnly) {
-      return 'linear-gradient(210deg, #79d8f4, #72a9ef, #d486f0, #ee9fd1)'
+      return itemEditStyles;
     } else {
-      return 'rgb(255,255,255, 0.9)'
+      return itemStyles;
     }
-  }
+  };
 
   return (
-    <Space
-      style={{
-        background: getColor(),
-        padding: '10px',
-        borderRadius: '6px',
-      }}
-    >
-      <Space>
-        <TodoItemInput readOnly={readOnly} value={value} setValue={setValue} handleEdit={handleEdit} />
-      </Space>
-      <Space>
+    <Box style={getColor()} gap={10} className='fade-in-from-top'>
+      <TodoItemInput
+        readOnly={readOnly}
+        completed={completed}
+        value={value}
+        setValue={setValue}
+        handleEdit={handleEdit}
+      />
+      <Box gap={5}>
         <ToggleTodoButton id={id} completed={completed} />
-        <EditTodoButton readOnly={readOnly} setReadOnly={setReadOnly} handleEdit={handleEdit} completed={completed} />
+        <EditTodoButton
+          readOnly={readOnly}
+          setReadOnly={setReadOnly}
+          handleEdit={handleEdit}
+          completed={completed}
+        />
         <DeleteTodoButton id={id} />
-      </Space>
-    </Space>
+      </Box>
+    </Box>
   );
 };
 

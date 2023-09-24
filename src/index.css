@@ -3,8 +3,6 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
   background: linear-gradient(210deg, #79d8f4, #72a9ef, #d486f0, #ee9fd1);
 
   font-synthesis: none;
@@ -14,9 +12,33 @@
   -webkit-text-size-adjust: 100%;
 }
 
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
 body {
   margin: 0;
   display: flex;
-  min-width: 500px;
+  min-width: 300px;
   min-height: 100vh;
+}
+
+.fade-in-from-top {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: fadeInFromTop 0.5s ease forwards;
+}
+
+@keyframes fadeInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

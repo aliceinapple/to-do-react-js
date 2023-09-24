@@ -1,9 +1,13 @@
-import './App.css';
 import { useState, useEffect, createContext } from 'react';
 import { getTodos } from './actions/get-todos';
 import ToDoInput from './components/to-do-input/to-do-input.component';
 import ToDoItemList from './components/to-do-item-list/to-do-item-list.component';
-import { Space } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
+import Box from './ui/box/box';
+import Title from 'antd/es/typography/Title';
+import { textStyles } from './ui/styles/text';
+import { texts } from './resources/texts';
+import { Divider } from 'antd';
 
 export const TodosContext = createContext({
   handleGetTodos: async () => { },
@@ -23,26 +27,12 @@ function App() {
 
   return (
     <TodosContext.Provider value={{ handleGetTodos }}>
-      <Space direction="vertical">
-        <Space
-          style={{
-            backgroundColor: 'rgb(255,255,255, 0.5)',
-            padding: '20px',
-            borderRadius: '6px',
-          }}
-        >
-          <ToDoInput />
-        </Space>
-        <Space
-          style={{
-            backgroundColor: 'rgb(255,255,255, 0.5)',
-            padding: '20px',
-            borderRadius: '6px',
-          }}
-        >
-          <ToDoItemList todos={todos} />
-        </Space>
-      </Space>
+      <Box flexDirection='column' className='fade-in-from-top'>
+        <Title style={textStyles}>{texts.app_title}<CheckOutlined /></Title>
+        <ToDoInput />
+        <Divider />
+        <ToDoItemList todos={todos} />
+      </Box>
     </TodosContext.Provider>
   );
 }
